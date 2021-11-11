@@ -10,3 +10,6 @@ const rl = readline.createInterface({
 rl.on('line', (line)=>{
     console.log('>>>',line.toUpperCase())
 })
+
+var resultado = readable.split(" ");
+console.log(resultado);
