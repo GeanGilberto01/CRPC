@@ -8,8 +8,8 @@ const rl = readline.createInterface({
 })
 
 rl.on('line', (line)=>{
-    console.log('>>>',line.toUpperCase())
+    var resultado = line.toUpperCase();
+    // string = string.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '');
+    resultado = resultado.replace(/[^a-zA-Z]/g, ' ');
+    console.log('<<<',resultado);
 })
-
-var resultado = readable.split(" ");
-console.log(resultado);
