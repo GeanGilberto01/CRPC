@@ -105,27 +105,8 @@ function tags(resultado){
 
 //CRIAÇÃO DO VETOR
 function vetor(resultado){
-    texto.push(resultado.filter(Boolean));
-    for(var i = 0; i < 14; i++){
-        delete texto[i];
+    if(resultado.filter(Boolean).length > 0){
+        texto.push(resultado.filter(Boolean));
     }
-    // exclusao();
     console.log(texto);
 }
-
-function exclusao(){
-    var teste = texto.filter(Boolean);
-    console.log(teste);
-    
-}
-
-Array.prototype.clean = function() {
-    for (var i = 0; i < texto.length; i++) {
-        for (var j = 0; j < texto[i].length; j++) {
-            if (texto[i][j] === null) {         
-                texto[i].splice(j, 1);
-                j--;
-            }
-        }
-    }
-  };
