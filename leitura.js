@@ -1,13 +1,23 @@
 const readline = require('readline')
-const fs = require('fs')
+const fs = require('fs');
+const { Console } = require('console');
 const readable = fs.createReadStream('pf0022pu.htm')
 var texto = [];
 
+// readline.eachline(readable, function(line, last) {
+//     console.log(line);
+//   if(last){
+//     // or check if it's the last one
+//   }
+// })
+
 const rl = readline.createInterface({
     input: readable,
-    output: process.stdount
+    output: process.stdount,
+    terminal: false
 })
 
+//LEITURA DE CADA LINHA DO TEXTO
 rl.on('line', (line)=>{
     var resultado = line.toUpperCase();
     // // console.log('>>>',resultado);
@@ -25,12 +35,11 @@ rl.on('line', (line)=>{
 
     //SEPARAÇÃO DAS PALAVRAS POR ESPAÇO
     resultado = resultado.split(' ');
-    // console.log('<<<',resultado);
     vetor(resultado);
-})
+}) 
 
+//TRATAMRNTO DE ACENTUAÇÃO
 function acentuacao(resultado){
-    //TRATAMRNTO DE ACENTUAÇÃO
     resultado = resultado.replace('Ã', 'A');
     resultado = resultado.replace('À', 'A');
     resultado = resultado.replace('Á', 'A');
@@ -45,8 +54,8 @@ function acentuacao(resultado){
     return resultado;
 }
 
+//TRATAMENTO DE TAGS
 function tags(resultado){
-    //TRATAMENTO DE TAGS
     resultado = resultado.replace('<HTML>', ' ');
     resultado = resultado.replace('<HEAD>', ' ');
     resultado = resultado.replace('<TITLE>', ' ');
@@ -107,6 +116,12 @@ function tags(resultado){
 function vetor(resultado){
     if(resultado.filter(Boolean).length > 0){
         texto.push(resultado.filter(Boolean));
+        console.log(texto);
     }
-    console.log(texto);
 }
+
+// for(var i = 0; i < texto.length; i++){
+//     for(var j = 0; j < texto[i].length; j++){
+//         console.log(texto[i][j]);
+//     }
+// }
