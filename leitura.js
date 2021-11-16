@@ -6,13 +6,6 @@ const readable = fs.createReadStream('pf0022pu.htm')
 var texto = [];
 var final = [];
 
-// readline.eachline(readable, function(line, last) {
-//     console.log(line);
-//   if(last){
-//     // or check if it's the last one
-//   }
-// })
-
 const rl = readline.createInterface({
     input: readable,
     output: process.stdount,
@@ -38,9 +31,6 @@ rl.on('line', (line)=>{
     //SEPARAÇÃO DAS PALAVRAS POR ESPAÇO
     resultado = resultado.split(' ');
     vetor(resultado);
-    setTimeout(() => {
-        vfinal();
-    }, 3000);
 }) 
 
 //TRATAMRNTO DE ACENTUAÇÃO
@@ -125,13 +115,20 @@ function vetor(resultado){
 }
 
 function vfinal(){
+    var k = 0;
     for(var i = 0; i < texto.length; i++){
         for(var j = 0; j < texto[i].length; j++){
-            final = texto[i][j];
-            console.log(final);
+            final[k] = texto[i][j];
+            k++;
         }
     }
 }
+
+
+setTimeout(() => {
+    vfinal();
+    console.log(final);
+}, 3000);
 
 //OCORRENCIA DA PALAVRA NO TEXTO
 // const str = "Este é o meu texto que contém a palavra texto";
