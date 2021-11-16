@@ -127,33 +127,19 @@ function vfinal(){
 
 setTimeout(() => {
     vfinal();
-    console.log(final);
+    console.log(countDuplicates(final));   
 }, 3000);
 
-//OCORRENCIA DA PALAVRA NO TEXTO
-// const str = "Este é o meu texto que contém a palavra texto";
-// const str2 = "Este não tem";
-// const ocorrencias = (str.match(/texto/g) || []).length;
-// const ocorrencias2 = (str2.match(/texto/g) || []).length;
-// console.log(ocorrencias); // 2
-// console.log(ocorrencias2); // 0
-
-// OCORRENCIA NUM ARRAY
-// const arr = ['oi', 'oi', 'oi', 'tudo', 'tudo', 'bem', '?'];
-// console.log(countDuplicates(arr));
-
-// function countDuplicates(arr) {
-//   const map = Object.create(null);
-  
-//   for (const str of arr) {
-//     if (map[str]) {
+ function countDuplicates(final) {
+   const map = Object.create(null);
+   for (const str of final) {
+     if (map[str]) {
 //       // Se já tiver contabilizado, some `1` ao contador:
-//       map[str] += 1;
-//     } else {
+       map[str] += 1;
+     } else {
 //       // Caso contrário, iniciamos o contador como `1`:
-//       map[str] = 1;
-//     }
-//   }
-  
-//   return map;
-// }
+       map[str] = 1;
+     }
+   }
+   return map;
+ }
