@@ -1,8 +1,10 @@
 const readline = require('readline')
 const fs = require('fs');
 const { Console } = require('console');
+const { DH_CHECK_P_NOT_SAFE_PRIME } = require('constants');
 const readable = fs.createReadStream('pf0022pu.htm')
 var texto = [];
+var final = [];
 
 // readline.eachline(readable, function(line, last) {
 //     console.log(line);
@@ -36,6 +38,9 @@ rl.on('line', (line)=>{
     //SEPARAÇÃO DAS PALAVRAS POR ESPAÇO
     resultado = resultado.split(' ');
     vetor(resultado);
+    setTimeout(() => {
+        vfinal();
+    }, 3000);
 }) 
 
 //TRATAMRNTO DE ACENTUAÇÃO
@@ -116,12 +121,42 @@ function tags(resultado){
 function vetor(resultado){
     if(resultado.filter(Boolean).length > 0){
         texto.push(resultado.filter(Boolean));
-        console.log(texto);
     }
 }
 
-// for(var i = 0; i < texto.length; i++){
-//     for(var j = 0; j < texto[i].length; j++){
-//         console.log(texto[i][j]);
+function vfinal(){
+    for(var i = 0; i < texto.length; i++){
+        for(var j = 0; j < texto[i].length; j++){
+            final = texto[i][j];
+            console.log(final);
+        }
+    }
+}
+
+//OCORRENCIA DA PALAVRA NO TEXTO
+// const str = "Este é o meu texto que contém a palavra texto";
+// const str2 = "Este não tem";
+// const ocorrencias = (str.match(/texto/g) || []).length;
+// const ocorrencias2 = (str2.match(/texto/g) || []).length;
+// console.log(ocorrencias); // 2
+// console.log(ocorrencias2); // 0
+
+// OCORRENCIA NUM ARRAY
+// const arr = ['oi', 'oi', 'oi', 'tudo', 'tudo', 'bem', '?'];
+// console.log(countDuplicates(arr));
+
+// function countDuplicates(arr) {
+//   const map = Object.create(null);
+  
+//   for (const str of arr) {
+//     if (map[str]) {
+//       // Se já tiver contabilizado, some `1` ao contador:
+//       map[str] += 1;
+//     } else {
+//       // Caso contrário, iniciamos o contador como `1`:
+//       map[str] = 1;
 //     }
+//   }
+  
+//   return map;
 // }
