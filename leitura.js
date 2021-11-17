@@ -5,6 +5,7 @@ const { DH_CHECK_P_NOT_SAFE_PRIME } = require('constants');
 const readable = fs.createReadStream('pf0022pu.htm')
 var texto = [];
 var final = [];
+var teste;
 
 const rl = readline.createInterface({
     input: readable,
@@ -13,14 +14,14 @@ const rl = readline.createInterface({
 })
 
 //LEITURA DE CADA LINHA DO TEXTO
-rl.on('line', (line)=>{
+rl.on('line', (line) => {
     var resultado = line.toUpperCase();
     // // console.log('>>>',resultado);
-    resultado = acentuacao(resultado);
+    for (var i = 0; i < 3; i++) {
+        resultado = acentuacao(resultado);
+    }
 
     resultado = tags(resultado);
-
-    resultado = acentuacao(resultado);
 
     // TRATAMENTO DE CARACTERES ESPECIAIS E NUMERICOS
     resultado = resultado.replace(/[^a-zA-Z]/g, ' ');
@@ -31,10 +32,10 @@ rl.on('line', (line)=>{
     //SEPARAÇÃO DAS PALAVRAS POR ESPAÇO
     resultado = resultado.split(' ');
     vetor(resultado);
-}) 
+})
 
 //TRATAMRNTO DE ACENTUAÇÃO
-function acentuacao(resultado){
+function acentuacao(resultado) {
     resultado = resultado.replace('Ã', 'A');
     resultado = resultado.replace('À', 'A');
     resultado = resultado.replace('Á', 'A');
@@ -50,7 +51,7 @@ function acentuacao(resultado){
 }
 
 //TRATAMENTO DE TAGS
-function tags(resultado){
+function tags(resultado) {
     resultado = resultado.replace('<HTML>', ' ');
     resultado = resultado.replace('<HEAD>', ' ');
     resultado = resultado.replace('<TITLE>', ' ');
@@ -108,16 +109,16 @@ function tags(resultado){
 }
 
 //CRIAÇÃO DO VETOR
-function vetor(resultado){
-    if(resultado.filter(Boolean).length > 0){
+function vetor(resultado) {
+    if (resultado.filter(Boolean).length > 0) {
         texto.push(resultado.filter(Boolean));
     }
 }
 
-function vfinal(){
+function vfinal() {
     var k = 0;
-    for(var i = 0; i < texto.length; i++){
-        for(var j = 0; j < texto[i].length; j++){
+    for (var i = 0; i < texto.length; i++) {
+        for (var j = 0; j < texto[i].length; j++) {
             final[k] = texto[i][j];
             k++;
         }
@@ -127,19 +128,37 @@ function vfinal(){
 
 setTimeout(() => {
     vfinal();
-    console.log(countDuplicates(final));   
+    teste = countDuplicates(final);
+    console.log(teste);
+    exportToCsv();
 }, 3000);
 
- function countDuplicates(final) {
-   const map = Object.create(null);
-   for (const str of final) {
-     if (map[str]) {
-//       // Se já tiver contabilizado, some `1` ao contador:
-       map[str] += 1;
-     } else {
-//       // Caso contrário, iniciamos o contador como `1`:
-       map[str] = 1;
-     }
-   }
-   return map;
- }
+function countDuplicates(final) {
+    const map = Object.create(null);
+    for (const str of final) {
+        if (map[str]) {
+            //       // Se já tiver contabilizado, some `1` ao contador:
+            map[str] += 1;
+        } else {
+            //       // Caso contrário, iniciamos o contador como `1`:
+            map[str] = 1;
+        }
+    }
+    return map;
+}
+
+exportToCsv = function () {
+    var CsvString = "";
+    teste.forEach(function (RowItem, RowIndex) {
+        RowItem.forEach(function (ColItem, ColIndex) {
+            CsvString += ColItem + ',';
+        });
+        CsvString += "\r\n";
+    });
+    CsvString = "data:application/csv," + encodeURIComponent(CsvString);
+    var x = document.createElement("A");
+    x.setAttribute("href", CsvString);
+    x.setAttribute("download", "grafico.csv");
+    document.body.appendChild(x);
+    x.click();
+}
