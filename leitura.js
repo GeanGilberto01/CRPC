@@ -130,7 +130,7 @@ setTimeout(() => {
     vfinal();
     teste = countDuplicates(final);
     console.log(teste);
-    exportToCsv();
+    // exportToCsv();
 }, 3000);
 
 function countDuplicates(final) {
@@ -147,18 +147,18 @@ function countDuplicates(final) {
     return map;
 }
 
-exportToCsv = function () {
-    var CsvString = "";
-    teste.forEach(function (RowItem, RowIndex) {
-        RowItem.forEach(function (ColItem, ColIndex) {
-            CsvString += ColItem + ',';
-        });
-        CsvString += "\r\n";
-    });
-    CsvString = "data:application/csv," + encodeURIComponent(CsvString);
-    var x = document.createElement("A");
-    x.setAttribute("href", CsvString);
-    x.setAttribute("download", "grafico.csv");
-    document.body.appendChild(x);
-    x.click();
-}
+// exportToCsv = function () {
+//     var CsvString = "";
+//     texto.forEach(function (RowItem, RowIndex) {
+//         RowItem.forEach(function (ColItem, ColIndex) {
+//             CsvString += ColItem + ',';
+//         });
+//         CsvString += "\r\n";
+//     });
+//     CsvString = "data:application/csv," + encodeURIComponent(CsvString);
+//     var x = document.createElement();
+//     x.setAttribute("href", CsvString);
+//     x.setAttribute("download", "grafico.csv");
+//     document.body.appendChild(x);
+//     x.click();
+// }
