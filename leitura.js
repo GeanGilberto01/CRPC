@@ -2,7 +2,7 @@ const readline = require('readline')
 const fs = require('fs');
 const { Console } = require('console');
 const { DH_CHECK_P_NOT_SAFE_PRIME } = require('constants');
-const readable = fs.createReadStream('pf0022pu.htm')
+const readable = fs.createReadStream('ARQUIVOS/pf0022pu.htm')
 var texto = [];
 var final = [];
 var teste;
