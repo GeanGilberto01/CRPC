@@ -127,11 +127,11 @@ function vfinal() {
 
 setTimeout(() => {
     vfinal();
-    teste = countDuplicates(final);
+    teste = countDuplicates();
     console.log(teste);
 }, 3000);
 
-function countDuplicates(final) {
+function countDuplicates() {
     const map = Object.create(null);
     for (const str of final) {
         if (map[str]) {
