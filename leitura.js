@@ -2,10 +2,27 @@ const readline = require('readline')
 const fs = require('fs');
 const { Console } = require('console');
 const { DH_CHECK_P_NOT_SAFE_PRIME } = require('constants');
-const readable = fs.createReadStream('ARQUIVOS/pf0022pu.htm')
+const readable = fs.createReadStream('ARQUIVOS/pf0022pu.htm');
 var texto = [];
 var final = [];
-var teste;
+var teste = [];
+
+//Conexão mysql
+var mysql = require('mysql2');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : 'root',
+  database : 'aula'
+});
+
+connection.connect();
+
+//criando tabela
+connection.query('create table palavra(palavra)', function (error, results, fields) {
+    if (error) throw error;
+    console.log('Table Criada');
+});
 
 const rl = readline.createInterface({
     input: readable,
@@ -120,6 +137,11 @@ function vfinal() {
     for (var i = 0; i < texto.length; i++) {
         for (var j = 0; j < texto[i].length; j++) {
             final[k] = texto[i][j];
+            const sql = 'insert into palavra values(?);'
+            connection.query(sql,  'a', function (error, results, fields) {
+                if (error) throw error;
+                console.log('Valores Inseridos');
+                });
             k++;
         }
     }
@@ -127,20 +149,32 @@ function vfinal() {
 
 setTimeout(() => {
     vfinal();
-    teste = countDuplicates();
-    console.log(teste);
+    // teste = countDuplicates();
+    // console.log(teste);
+    encerarmysql(); 
 }, 3000);
 
-function countDuplicates() {
-    const map = Object.create(null);
-    for (const str of final) {
-        if (map[str]) {
-            //       // Se já tiver contabilizado, some `1` ao contador:
-            map[str] += 1;
-        } else {
-            //       // Caso contrário, iniciamos o contador como `1`:
-            map[str] = 1;
-        }
-    }
-    return map;
+// function countDuplicates() {
+//     const map = Object.create(null);
+//     const aux = [];
+//     for (const str of final) {
+//         aux.push(str);
+//         if (map[str]) {
+//             //       // Se já tiver contabilizado, some `1` ao contador:
+//             map[str] += 1;
+//         } else {
+//             //       // Caso contrário, iniciamos o contador como `1`:
+//             map[str] = 1;
+//         }
+//     }
+//     return aux;
+// }
+
+//finalizando conexao mysql
+function encerarmysql(){
+    // connection.query('drop table palavra', function (error, results, fields) {
+    //     if (error) throw error;
+    //     console.log('Drop table');
+    //   });
+    connection.end();
 }
