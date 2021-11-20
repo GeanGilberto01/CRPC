@@ -56,6 +56,20 @@ setTimeout(() => {
     encerarmysql();
 }, 3000);
 
+function tabela(){
+    var tb = document.getElementById("tbPalavras");
+    var qtdLinhas = tb.rows.length;
+    var linha = tb.insertRow(qtdLinhas);
+
+    var cellCodigo = linha.insertCell(0);
+    var cellPalavra = linha.insertCell(1);
+    var cellOcorrencia = linha.insertCell(2);
+
+    cellCodigo.innerHTML = qtdLinhas;
+    cellPalavra.innerHTML = 'Palavra';
+    cellOcorrencia.innerHTML = 'Orrencias';
+}
+
 //--------------------------------------------------------------//
 //       MANIPULAÇÃO E AJUSTES DOS DADOS DO ARQUIVO HTM         //
 //--------------------------------------------------------------//

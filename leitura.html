@@ -1,13 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 
 <head>
+    <meta charset="utf-8">
+    <title>Ocorrencia de Palavras</title>
     <script src="leitura.js"></script>
-</head>
+    <LINK REL=STYLESHEET TYPE="text/css" HREF="estilo.css">
 
 <body>
-    <button onclick="exportToCsv()">export to CSV</button>
-    <p id=resultado></p>
+    <div id="dfPalavras">
+        <form name="fPalavras">
+           <input type="button" value="Gerar Tabela" onclick="tabela()"/>
+        </form>
+    </div>
+    <br><br>
+    <div id="dtPalavras">
+        <table id="tbPalavras">
+            <thead> 
+                <tr>
+                    <th>Codigo</th>
+                    <th>Palavra</th>
+                    <th>Ocorrencia</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </body>
 
 </html>
