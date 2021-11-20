@@ -1,3 +1,6 @@
+//--------------------------------------------------------------//
+//                    CRIAÇÃO DAS VARIAVEIS                     //
+//--------------------------------------------------------------//
 const readline = require('readline')
 const fs = require('fs');
 const { Console } = require('console');
@@ -7,8 +10,13 @@ var texto = [];
 var final = [];
 var teste = [];
 
-//Conexão mysql
-var mysql = require('mysql2');
+const rl = readline.createInterface({
+    input: readable,
+    output: process.stdount,
+    terminal: false
+})
+
+var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
@@ -16,24 +24,14 @@ var connection = mysql.createConnection({
   database : 'aula'
 });
 
-connection.connect();
-
-//criando tabela
-connection.query('create table palavra(palavra)', function (error, results, fields) {
-    if (error) throw error;
-    console.log('Table Criada');
-});
-
-const rl = readline.createInterface({
-    input: readable,
-    output: process.stdount,
-    terminal: false
-})
+//--------------------------------------------------------------//
+//                      EXECUÇÃO DO CODIGO                      //
+//--------------------------------------------------------------//
 
 //LEITURA DE CADA LINHA DO TEXTO
 rl.on('line', (line) => {
     var resultado = line.toUpperCase();
-    // // console.log('>>>',resultado);
+    
     for (var i = 0; i < 3; i++) {
         resultado = acentuacao(resultado);
     }
@@ -50,6 +48,17 @@ rl.on('line', (line) => {
     resultado = resultado.split(' ');
     vetor(resultado);
 })
+
+setTimeout(() => {
+    conexaomysql();
+    vfinal();
+    ocorrencia();
+    encerarmysql();
+}, 3000);
+
+//--------------------------------------------------------------//
+//       MANIPULAÇÃO E AJUSTES DOS DADOS DO ARQUIVO HTM         //
+//--------------------------------------------------------------//
 
 //TRATAMRNTO DE ACENTUAÇÃO
 function acentuacao(resultado) {
@@ -132,49 +141,50 @@ function vetor(resultado) {
     }
 }
 
+//--------------------------------------------------------------//
+//            MANIPULAÇÃO DOS DADOS NO MYSQL                    //
+//--------------------------------------------------------------//
+
+//conecta ao banco e cria a tabela 
+function conexaomysql(){
+    connection.connect();
+    
+    //criando tabela
+    connection.query(
+        'create table palavras(id smallint unsigned not null auto_increment, palavra varchar(50),PRIMARY KEY (id));',
+        function (error, results, fields) {
+            if (error) throw error;
+    });
+}
+
 function vfinal() {
-    var k = 0;
+    var k = 1;
     for (var i = 0; i < texto.length; i++) {
         for (var j = 0; j < texto[i].length; j++) {
             final[k] = texto[i][j];
-            const sql = 'insert into palavra values(?);'
-            connection.query(sql,  'a', function (error, results, fields) {
+            const sql = 'insert into palavras values(?,?);'
+            connection.query(sql,[k,final[k]], function (error, results, fields) {
                 if (error) throw error;
-                console.log('Valores Inseridos');
                 });
             k++;
         }
     }
 }
 
-setTimeout(() => {
-    vfinal();
-    // teste = countDuplicates();
-    // console.log(teste);
-    encerarmysql(); 
-}, 3000);
-
-// function countDuplicates() {
-//     const map = Object.create(null);
-//     const aux = [];
-//     for (const str of final) {
-//         aux.push(str);
-//         if (map[str]) {
-//             //       // Se já tiver contabilizado, some `1` ao contador:
-//             map[str] += 1;
-//         } else {
-//             //       // Caso contrário, iniciamos o contador como `1`:
-//             map[str] = 1;
-//         }
-//     }
-//     return aux;
-// }
+//calcula o numero de ocorrencia mysql
+function ocorrencia(){
+    connection.query('select palavra,count(*) as ocorrencia from palavras group by palavra order by ocorrencia desc;',
+     function (error, results, fields) {
+        if (error) throw error;
+        teste=results;
+        console.log(teste);
+        }); 
+}
 
 //finalizando conexao mysql
 function encerarmysql(){
-    // connection.query('drop table palavra', function (error, results, fields) {
-    //     if (error) throw error;
-    //     console.log('Drop table');
-    //   });
+    connection.query('drop table palavras', function (error, results, fields) {
+        if (error) throw error;
+      });
     connection.end();
 }
