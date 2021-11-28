@@ -1,7 +1,7 @@
 //--------------------------------------------------------------//
 //                    CRIAÇÃO DAS VARIAVEIS                     //
 //--------------------------------------------------------------//
-const readline = require('readline')
+const readline = require('readline');
 const fs = require('fs');
 const { Console } = require('console');
 const { DH_CHECK_P_NOT_SAFE_PRIME } = require('constants');
@@ -18,10 +18,10 @@ const rl = readline.createInterface({
 
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'aula'
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'aula'
 });
 
 //--------------------------------------------------------------//
@@ -29,9 +29,10 @@ var connection = mysql.createConnection({
 //--------------------------------------------------------------//
 
 //LEITURA DE CADA LINHA DO TEXTO
+
 rl.on('line', (line) => {
     var resultado = line.toUpperCase();
-    
+
     for (var i = 0; i < 3; i++) {
         resultado = acentuacao(resultado);
     }
@@ -55,20 +56,6 @@ setTimeout(() => {
     ocorrencia();
     encerarmysql();
 }, 3000);
-
-function tabela(){
-    var tb = document.getElementById("tbPalavras");
-    var qtdLinhas = tb.rows.length;
-    var linha = tb.insertRow(qtdLinhas);
-
-    var cellCodigo = linha.insertCell(0);
-    var cellPalavra = linha.insertCell(1);
-    var cellOcorrencia = linha.insertCell(2);
-
-    cellCodigo.innerHTML = qtdLinhas;
-    cellPalavra.innerHTML = 'Palavra';
-    cellOcorrencia.innerHTML = 'Orrencias';
-}
 
 //--------------------------------------------------------------//
 //       MANIPULAÇÃO E AJUSTES DOS DADOS DO ARQUIVO HTM         //
@@ -160,15 +147,15 @@ function vetor(resultado) {
 //--------------------------------------------------------------//
 
 //conecta ao banco e cria a tabela 
-function conexaomysql(){
+function conexaomysql() {
     connection.connect();
-    
+
     //criando tabela
     connection.query(
         'create table palavras(id smallint unsigned not null auto_increment, palavra varchar(50),PRIMARY KEY (id));',
         function (error, results, fields) {
             if (error) throw error;
-    });
+        });
 }
 
 function vfinal() {
@@ -177,28 +164,35 @@ function vfinal() {
         for (var j = 0; j < texto[i].length; j++) {
             final[k] = texto[i][j];
             const sql = 'insert into palavras values(?,?);'
-            connection.query(sql,[k,final[k]], function (error, results, fields) {
+            connection.query(sql, [k, final[k]], function (error, results, fields) {
                 if (error) throw error;
-                });
+            });
             k++;
         }
     }
 }
 
 //calcula o numero de ocorrencia mysql
-function ocorrencia(){
+function ocorrencia() {
     connection.query('select palavra,count(*) as ocorrencia from palavras group by palavra order by ocorrencia desc;',
-     function (error, results, fields) {
-        if (error) throw error;
-        teste=results;
-        console.log(teste);
-        }); 
+        function (error, results, fields) {
+            if (error) throw error;
+            teste.push(results);
+            imprime();
+        });
 }
 
 //finalizando conexao mysql
-function encerarmysql(){
+function encerarmysql() {
     connection.query('drop table palavras', function (error, results, fields) {
         if (error) throw error;
-      });
+    });
     connection.end();
+}
+
+//Imprimi cada linha retornada
+function imprime() {
+    for (var i = 0; i < teste[0].length; i++) {
+        console.log(teste[0][i]);
+    }
 }
